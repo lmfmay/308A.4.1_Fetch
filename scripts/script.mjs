@@ -31,8 +31,11 @@ async function initialLoad() {
         breedOption.innerHTML = breed.name;
         breedSelect.appendChild(breedOption);
     });
+    //let catIDArray = (catBreeds.map((cat)=>(cat.id)))
+    
+    carouselHandler()
 }
-
+initialLoad()
 /**
  * 2. Create an event handler for breedSelect that does the following:
  * - Retrieve information on the selected breed from the cat API using fetch().
@@ -48,6 +51,19 @@ async function initialLoad() {
  * - Add a call to this function to the end of your initialLoad function above to create the initial carousel.
  */
 breedSelect.addEventListener(`click`,initialLoad)
+
+async function carouselHandler() {
+    const response = await fetch (`https://api.thecatapi.com/v1/images/search?limit=100`,{
+        headers: {'x-api-key':API_KEY}
+    });
+    const jsonData = await response.json();
+    const catImg = jsonData.map((cat)=>({url:cat.url}))
+    catImg.forEach(img => {
+        let imgSrc = Carousel.createCarouselItem(img)
+        Carousel.appendCarousel(imgSrc)
+    });
+}
+
 /**
  * 3. Fork your own sandbox, creating a new one named "JavaScript Axios Lab."
  */
