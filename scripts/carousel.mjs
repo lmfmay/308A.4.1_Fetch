@@ -1,4 +1,4 @@
-//import * as bootstrap from "bootstrap";
+// import * as bootstrap from "bootstrap";
 import { favourite } from "./script.mjs";
 
 export function createCarouselItem(imgSrc, imgAlt, imgId) {

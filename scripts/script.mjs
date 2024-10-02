@@ -32,10 +32,18 @@ async function initialLoad() {
         breedSelect.appendChild(breedOption);
     });
     //let catIDArray = (catBreeds.map((cat)=>(cat.id)))
+    // breedSelect.addEventListener(`change`,()=>{ 
+        //for (let id of catIDArray){
+            //carouselHandler(catIDArray[0]);
+        //}
+    //     })
     
-    carouselHandler()
+    //carouselHandler(catIDArray[0])
+    
+    
+    
 }
-initialLoad()
+//initialLoad()
 /**
  * 2. Create an event handler for breedSelect that does the following:
  * - Retrieve information on the selected breed from the cat API using fetch().
@@ -51,17 +59,33 @@ initialLoad()
  * - Add a call to this function to the end of your initialLoad function above to create the initial carousel.
  */
 breedSelect.addEventListener(`click`,initialLoad)
+breedSelect.addEventListener(`change`,carouselHandler)
 
 async function carouselHandler() {
-    const response = await fetch (`https://api.thecatapi.com/v1/images/search?limit=100`,{
+    let id = breedSelect.value
+    //const response = await fetch (`https://api.thecatapi.com/v1/images/search?breed_ids=${id}`)
+    const response = await fetch (`https://api.thecatapi.com/v1/images/search?limit=20&breed_ids=${id}`,{
         headers: {'x-api-key':API_KEY}
     });
     const jsonData = await response.json();
-    const catImg = jsonData.map((cat)=>({url:cat.url}))
+    const catImg = jsonData.map((cat)=>(cat.url))
+    Carousel.clear()
     catImg.forEach(img => {
         let imgSrc = Carousel.createCarouselItem(img)
         Carousel.appendCarousel(imgSrc)
     });
+    
+    //let imgSrc = Carousel.createCarouselItem(catImg[0].url)
+    //Carousel.appendCarousel(imgSrc)
+
+    // catImg.forEach(img => {
+    //     Carousel.start()
+    //     Carousel.clear()
+    //     let imgSrc = Carousel.createCarouselItem(img.url)
+    //     Carousel.appendCarousel(imgSrc)
+    //     //console.log(imgSrc)
+    // });
+    console.log(catImg)
 }
 
 /**
