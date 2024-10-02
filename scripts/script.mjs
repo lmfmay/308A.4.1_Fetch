@@ -11,7 +11,7 @@ const progressBar = document.getElementById("progressBar");
 const getFavouritesBtn = document.getElementById("getFavouritesBtn");
 
 // Step 0: Store your API key here for reference and easy access.
-const API_KEY = "";
+const API_KEY = "live_vbyDWONIeoXm2Uq6Or1T44cLJtrFrbwZv1mQjfwwmDiwFM5MJltcrAvSABHoPD5u";
 
 /**
  * 1. Create an async function "initialLoad" that does the following:
@@ -21,6 +21,17 @@ const API_KEY = "";
  *  - Each option should display text equal to the name of the breed.
  * This function should execute immediately.
  */
+async function initialLoad() {
+    const response = await fetch ("https://api.thecatapi.com/v1/breeds");
+    const jsonData = await response.json();
+    const catBreeds = jsonData.map((cat)=>({id:cat.id, name:cat.name}));
+    catBreeds.forEach(breed => {
+        let breedOption = document.createElement(`option`);
+        breedOption.setAttribute(`value`,breed.id);
+        breedOption.innerHTML = breed.name;
+        breedSelect.appendChild(breedOption);
+    });
+}
 
 /**
  * 2. Create an event handler for breedSelect that does the following:
@@ -36,7 +47,7 @@ const API_KEY = "";
  * - Each new selection should clear, re-populate, and restart the Carousel.
  * - Add a call to this function to the end of your initialLoad function above to create the initial carousel.
  */
-
+breedSelect.addEventListener(`click`,initialLoad)
 /**
  * 3. Fork your own sandbox, creating a new one named "JavaScript Axios Lab."
  */
