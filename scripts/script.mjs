@@ -57,25 +57,28 @@ async function carouselHandler() {
         headers: {'x-api-key':API_KEY}
     });
     const jsonData = await response.json();
-    const catImg = jsonData.map((cat)=>(cat.url))
+    //const catImg = jsonData.map((cat)=>(cat.url))
+    //let catimgAlt = jsonData.map((cat)=>(cat.breeds[0].name))
+    let catimgAlt = jsonData.map((cat)=>cat.breeds[0])
+    catimgAlt = `This is a photo of a ${catimgAlt[0].name}.`
+    
+    
+    //let catimgID = jsonData.map((cat)=>(cat.id))
+    
+    //console.log(jsonData)
     Carousel.start()
     Carousel.clear()
-    catImg.forEach(img => {
-        let imgSrc = Carousel.createCarouselItem(img)
-        Carousel.appendCarousel(imgSrc)
-    });
-    
-    //let imgSrc = Carousel.createCarouselItem(catImg[0].url)
-    //Carousel.appendCarousel(imgSrc)
 
     // catImg.forEach(img => {
-    //     Carousel.start()
-    //     Carousel.clear()
-    //     let imgSrc = Carousel.createCarouselItem(img.url)
+    //     let imgSrc = Carousel.createCarouselItem(img,catimgAlt,catimgID)
     //     Carousel.appendCarousel(imgSrc)
-    //     //console.log(imgSrc)
+    //     console.log(imgSrc)
     // });
-    console.log(catImg)
+
+    jsonData.forEach(cat => {
+        let imgSrc = Carousel.createCarouselItem(cat.url,catimgAlt,cat.id)
+        Carousel.appendCarousel(imgSrc)
+    });
 }
 
 /**
