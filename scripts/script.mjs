@@ -31,17 +31,6 @@ async function initialLoad() {
         breedOption.innerHTML = breed.name;
         breedSelect.appendChild(breedOption);
     });
-    //let catIDArray = (catBreeds.map((cat)=>(cat.id)))
-    // breedSelect.addEventListener(`change`,()=>{ 
-        //for (let id of catIDArray){
-            //carouselHandler(catIDArray[0]);
-        //}
-    //     })
-    
-    //carouselHandler(catIDArray[0])
-    
-    
-    
 }
 //initialLoad()
 /**
@@ -58,17 +47,18 @@ async function initialLoad() {
  * - Each new selection should clear, re-populate, and restart the Carousel.
  * - Add a call to this function to the end of your initialLoad function above to create the initial carousel.
  */
+
 breedSelect.addEventListener(`click`,initialLoad)
 breedSelect.addEventListener(`change`,carouselHandler)
 
 async function carouselHandler() {
     let id = breedSelect.value
-    //const response = await fetch (`https://api.thecatapi.com/v1/images/search?breed_ids=${id}`)
     const response = await fetch (`https://api.thecatapi.com/v1/images/search?limit=20&breed_ids=${id}`,{
         headers: {'x-api-key':API_KEY}
     });
     const jsonData = await response.json();
     const catImg = jsonData.map((cat)=>(cat.url))
+    Carousel.start()
     Carousel.clear()
     catImg.forEach(img => {
         let imgSrc = Carousel.createCarouselItem(img)
