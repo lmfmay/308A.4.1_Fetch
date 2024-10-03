@@ -43,8 +43,8 @@ async function initialLoad() {
  * - Use the other data you have been given to create an informational section within the infoDump element.
  *  - Be creative with how you create DOM elements and HTML.
  */
+initialLoad()
 
-breedSelect.addEventListener(`click`,initialLoad)
 breedSelect.addEventListener(`change`,carouselHandler)
 
 async function carouselHandler() {
@@ -56,7 +56,7 @@ async function carouselHandler() {
     
     //convert into jsonData
     const jsonData = await response.json();
-
+    
     //getting imgAlt for carousel item param using breed name.
     let catimgAlt = jsonData.map((cat)=>cat.breeds[0])
     catimgAlt = `This is a photo of a ${catimgAlt[0].name}.`
