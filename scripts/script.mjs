@@ -32,7 +32,7 @@ async function initialLoad() {
         breedSelect.appendChild(breedOption);
     });
 }
-//initialLoad()
+
 /**
  * 2. Create an event handler for breedSelect that does the following:
  * - Retrieve information on the selected breed from the cat API using fetch().
@@ -42,45 +42,41 @@ async function initialLoad() {
  *  - Append each of these new elements to the carousel.
  * - Use the other data you have been given to create an informational section within the infoDump element.
  *  - Be creative with how you create DOM elements and HTML.
- *  - Feel free to edit index.html and styles.css to suit your needs, but be careful!
- *  - Remember that functionality comes first, but user experience and design are important.
- * - Each new selection should clear, re-populate, and restart the Carousel.
- * - Add a call to this function to the end of your initialLoad function above to create the initial carousel.
  */
 
 breedSelect.addEventListener(`click`,initialLoad)
 breedSelect.addEventListener(`change`,carouselHandler)
 
 async function carouselHandler() {
+    //get images of breed using fetch method
     let id = breedSelect.value
     const response = await fetch (`https://api.thecatapi.com/v1/images/search?limit=20&breed_ids=${id}`,{
         headers: {'x-api-key':API_KEY}
     });
+    
+    //convert into jsonData
     const jsonData = await response.json();
-    //const catImg = jsonData.map((cat)=>(cat.url))
-    //let catimgAlt = jsonData.map((cat)=>(cat.breeds[0].name))
+
+    //getting imgAlt for carousel item param using breed name.
     let catimgAlt = jsonData.map((cat)=>cat.breeds[0])
     catimgAlt = `This is a photo of a ${catimgAlt[0].name}.`
-    
-    
-    //let catimgID = jsonData.map((cat)=>(cat.id))
-    
-    //console.log(jsonData)
+
+    //Each new selection should clear, re-populate, and restart the Carousel.
     Carousel.start()
     Carousel.clear()
+    //retrieving breed description for infoDump
+    let funFact = jsonData.map((cat)=>cat.breeds[0])
+    funFact = funFact[0].description
+    infoDump.innerHTML = funFact;
 
-    // catImg.forEach(img => {
-    //     let imgSrc = Carousel.createCarouselItem(img,catimgAlt,catimgID)
-    //     Carousel.appendCarousel(imgSrc)
-    //     console.log(imgSrc)
-    // });
-
+    //retrieve url and id params from jsonData for each cat image
     jsonData.forEach(cat => {
-        let imgSrc = Carousel.createCarouselItem(cat.url,catimgAlt,cat.id)
-        Carousel.appendCarousel(imgSrc)
+        let imgSrc = Carousel.createCarouselItem(cat.url,catimgAlt,cat.id);
+        Carousel.appendCarousel(imgSrc);
     });
 }
 
+    
 /**
  * 3. Fork your own sandbox, creating a new one named "JavaScript Axios Lab."
  */
